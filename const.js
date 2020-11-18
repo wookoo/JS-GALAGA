@@ -9,9 +9,9 @@ const KEY = {
   P: 80,
   Q: 81
 };
-const ITEM_TYPE = {
-  SPEED_UP : 1,
-  LIFE_UP : 2,
-  SHOOT_SPEED_UP : 3,
-  SHOOT_DELAY_REDUCE : 4
+const ITEM_EFFECT = {
+  MOVE_SPEED_UP : 0,
+  BULLET_SHOOT_SPEED_UP : 1,
+  BULLET_SHOOT_DELAY_DOWN : 2,
+  LIFE_UP : 3,
 };
