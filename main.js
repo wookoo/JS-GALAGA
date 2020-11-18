@@ -5,6 +5,7 @@ var ctx = canvas.getContext("2d");
 var rightPressed = false;
 var leftPressed = false;
 var lastShoot = new Date();
+var items = [];
 lastShoot = lastShoot.getTime();
 
 
@@ -24,7 +25,8 @@ function keyDownHandler(event){
     leftPressed = true;
   }
   else if (key == KEY.UP){
-    player.bulletSpeedUp();
+    //player.bulletSpeedUp();
+    printData();
   }
   else if (key == KEY.DOWN){
     player.bulletSpeedDown(3);
@@ -89,6 +91,57 @@ function drawEnemyBullets(){
   }
   ctx.closePath();
 }
+var create = false;
+function makeItem(){
+  //아이템 생성부
+  if(create){
+    return;
+  }
+  var jbRandom = Math.random();
+  items.push(new Item(Math.floor( jbRandom * canvas.width)));
+  console.log("아이템생성");
+  create = true;
+}
+
+function drawItem(){
+  ctx.beginPath();
+  ctx.fillStyle = "#00f"
+  for(var i = 0; i < items.length;i++){
+    var item = items[i];
+    //ctx.rect(bullet.x,bullet.y,10,10);
+    ctx.rect(item.x,item.y,item.width,item.height);
+    ctx.fill();
+    item.move();
+    if(item.y >= canvas.height){
+      items.splice(i,1);
+    }
+  }
+  ctx.closePath();
+}
+
+function hitItemDectect(){
+  for(var i = 0; i < items.length;i++){
+    var item = items[i];
+    if((item.x-player.width)<player.x && player.x < (item.x + item.width) &&
+  (item.y+item.height)>player.y-30 && (item.y-player.height)<player.y-30){
+      //아이템 정보 가져오기
+      var effect = item.itemEffect;
+      console.log(effect)
+      player.getItemEffect(effect);
+      items.splice(i,1);
+
+    }
+  }
+}
+
+function printData(){
+  //console.log(items[0].x);
+  console.log("아이템 :" ,items[0].y);
+  //console.log(player.x);
+  var item = items[0];
+  console.log("플레이어 y :",player.y-30);
+  console.log(item.y+item.height);
+}
 
 
 function draw(){
@@ -97,9 +150,11 @@ function draw(){
 
   drawInfo();
   drawEnemyBullets();
-
+  makeItem();
+  drawItem();
   drawBullets();
   drawPlayer();
+  hitItemDectect();
 
   if(rightPressed){
     player.moveRight(canvas.width);
