@@ -73,12 +73,30 @@ function drawBullets(){
   ctx.closePath();
 }
 
+function drawEnemyBullets(){
+  ctx.beginPath();
+  var bullets = Enemy.bullets;
+  ctx.fillStyle = "#f00"
+  for(var i = 0; i < bullets.length;i++){
+    var bullet = bullets[i];
+    //ctx.rect(bullet.x,bullet.y,10,10);
+    ctx.rect(bullet.x,bullet.y,bullet.size,bullet.size);
+    ctx.fill();
+    bullet.moveEnemy();
+    if(bullet.y >= canvas.height){
+      bullets.splice(i,1);
+    }
+  }
+  ctx.closePath();
+}
+
 
 function draw(){
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 
   drawInfo();
+  drawEnemyBullets();
 
   drawBullets();
   drawPlayer();
@@ -91,4 +109,6 @@ function draw(){
   }
   requestAnimationFrame(draw);
 }
+var k = new Enemy(15,0);
+k.shoot();
 draw();
