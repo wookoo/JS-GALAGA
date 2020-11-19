@@ -3,12 +3,55 @@ class Enemy{
   constructor(x,y){
     this.x = x;
     this.y = y;
-    var jbRandom = Math.random();
-    this.score = Math.floor( jbRandom * 150+100 );// 100~250 까지 랜덤
+    this.size = DEFAULT_ENEMY_SIZE;
+    this.score = Math.floor( Math.random() * 150+100 );// 100~250 까지 랜덤
+    var img_index = Math.floor(Math.random()*ENEMY_IMAGES.length);
+    this.img = ENEMY_IMAGES[img_index];
+    this.lastShoot = new Date().getTime();
+    this.delay = Math.floor((Math.random()*1500))+Math.floor((Math.random()*2000))+2000;
+    console.log(this.delay);
+    this.isShoot = false;
+    this.MAX_MOVE = this.x + 15;
+    this.START_X = x;
+    this.moveSpeed = 1;
+    this.lastMove = new Date().getTime();
+    this.isAttack = false;
   }
   shoot(){
-    //확률적으로 쏘게 만들기
-    Enemy.bullets.push(new Bullet(this.x,this.y));
+
+    var now = new Date().getTime();
+    if(now-this.lastShoot >this.delay && Math.floor(Math.random()*1000)==1 ){
+      this.isShoot = !this.isShoot;
+    //if((now - lastShoot) > 1000){
+      Enemy.bullets.push(new Bullet(this.x+this.size/2,this.y));
+      this.lastShoot = now;
+      this.delay = Math.floor((Math.random()*1500))+Math.floor((Math.random()*2000))+2000;
+    }
+    //확률적으로 쏘게 만들기, 생성된지 3초가 지나고 마지막으로 쏜게 3초가 지나고 5000분의1
+  }
+  isHit(x,y,width,height){
+    if(this.x < x+width && this.x+this.size > x && this.y > y-this.size && y < this.y){
+      return true;
+    }
+    return false;
+  }
+  move(){
+    if(this.isAttack){
+      this.y++;
+      return;
+    }
+    var now = new Date().getTime();
+    if(now - this.lastMove > 100){
+      this.x+=this.moveSpeed;
+      if(this.x > this.MAX_MOVE){
+        this.moveSpeed = -(this.moveSpeed);
+      }
+      if(this.x < this.START_X){
+        this.moveSpeed = -(this.moveSpeed);
+      }
+      this.lastMove = now;
+    }
+
   }
 }
 
@@ -35,11 +78,6 @@ class Player{
   }
   getDamage(){
     this.life--;
-    this.moveSpeed = 5;
-    this.bulletSpeed = 1;
-    this.bulletSize = 10;
-    this.width = 50;
-    this.shootDelay = 300;
   }
   moveSpeedUp(){
     this.moveSpeed += 1;
@@ -119,9 +157,16 @@ class Player{
       this.lifeUp();
     }
   }
+  isHit(x,y,width,height){
+    if((x-this.width)<this.x && this.x < (x +width) &&
+  (y+height)>this.y-30 && (y-this.height)<this.y-30){
+    return true;
+  }
+  return false;
+  }
 }
 class Bullet{
-    constructor(x,y,bulletSize=10,speed=2){
+    constructor(x,y,bulletSize=10,speed=1){
       this.x = x;
       this.y = y;
       this.size = bulletSize;
@@ -141,7 +186,7 @@ class Item{
   static canvas = null;
   constructor(x){
     this.x = x;
-    this.y = 0;
+    this.y = 150;
     this.width = ITEM_WIDTH;
     this.height = ITEM_WIDTH;
     var jbRandom = Math.random();
