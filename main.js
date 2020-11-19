@@ -4,9 +4,11 @@ var ctx = canvas.getContext("2d");
 
 var rightPressed = false;
 var leftPressed = false;
-var lastShoot = new Date();
+var lastShoot = new Date().getTime();
 var items = [];
-lastShoot = lastShoot.getTime();
+var lastItemMake = new Date().getTime();
+
+var itemMakeDelay = Math.floor((Math.random()*3000)+1500);
 
 
 document.addEventListener("keydown", keyDownHandler, false);
@@ -17,6 +19,7 @@ function keyDownHandler(event){
   var key = event.keyCode;
   if(key == KEY.SPACE){
     player.shoot();
+
   }
   else if (key == KEY.RIGHT){
     rightPressed = true;
@@ -26,10 +29,10 @@ function keyDownHandler(event){
   }
   else if (key == KEY.UP){
     //player.bulletSpeedUp();
-    printData();
+  //  printData();
   }
   else if (key == KEY.DOWN){
-    player.bulletSpeedDown(3);
+  //  player.bulletSpeedDown(3);
   }
 }
 function keyUpHandler(event){
@@ -43,17 +46,24 @@ function keyUpHandler(event){
     leftPressed = false;
   }
 }
-function drawInfo(){
-  ctx.font = "16px Arial";
-  ctx.fillStyle = "#fff";
-  ctx.fillText("생명 : "+player.life, canvas.width-65, 20);
-  ctx.font = "16px Arial";
-  ctx.fillStyle = "#fff";
-  ctx.fillText("획득점수 : "+player.score, 8, 20);
+function showInfo(){
+  document.getElementById("score").innerHTML = player.score;
+  document.getElementById("life").innerHTML = player.life;
+  document.getElementById("moveSpeed").innerHTML = player.moveSpeed;
+  document.getElementById("shootDelay").innerHTML = player.shootDelay;
+  document.getElementById("bulletSpeed").innerHTML = player.bulletSpeed;
+  document.getElementById("shooted").innerHTML = player.shooted;
+  document.getElementById("equipItems").innerHTML = player.equipItems;
+  document.getElementById("catched").innerHTML = player.catched;
+  var accuracy = Math.floor(player.catched /player.shooted *100) + "%";
+  if(player.shooted === 0){
+    accuracy = "0%";
+  }
+  document.getElementById("accuracy").innerHTML = accuracy;
 }
 function drawPlayer(){
   ctx.beginPath();
-  ctx.fillStyle = "#fff"
+  ctx.fillStyle = "#ffffff"
   ctx.rect(player.x,canvas.height-30,player.width,player.height);
   ctx.fill();
   ctx.closePath();
@@ -61,7 +71,7 @@ function drawPlayer(){
 function drawBullets(){
   ctx.beginPath();
   var bullets = player.bullets;
-  ctx.fillStyle = "#fdf"
+  ctx.fillStyle = "#ffffff"
   for(var i = 0; i < bullets.length;i++){
     var bullet = bullets[i];
     //ctx.rect(bullet.x,bullet.y,10,10);
@@ -91,27 +101,27 @@ function drawEnemyBullets(){
   }
   ctx.closePath();
 }
-var create = false;
+
 function makeItem(){
-  //아이템 생성부
-  if(create){
-    return;
+  var now = new Date().getTime();
+  if(now -lastItemMake >= itemMakeDelay ){
+    items.push(new Item(Math.floor( Math.random() * (canvas.width-ITEM_WIDTH))));
+    lastItemMake = now;
+    itemMakeDelay = Math.floor((Math.random()*3000)+5300);
   }
-  var jbRandom = Math.random();
-  items.push(new Item(Math.floor( jbRandom * canvas.width)));
-  console.log("아이템생성");
-  create = true;
+
 }
 
 function drawItem(){
   ctx.beginPath();
-  ctx.fillStyle = "#00f"
+
   for(var i = 0; i < items.length;i++){
     var item = items[i];
-    //ctx.rect(bullet.x,bullet.y,10,10);
+    ctx.fillStyle = item.color
     ctx.rect(item.x,item.y,item.width,item.height);
     ctx.fill();
     item.move();
+    item.rotateColor();
     if(item.y >= canvas.height){
       items.splice(i,1);
     }
@@ -124,13 +134,19 @@ function hitItemDectect(){
     var item = items[i];
     if((item.x-player.width)<player.x && player.x < (item.x + item.width) &&
   (item.y+item.height)>player.y-30 && (item.y-player.height)<player.y-30){
-      //아이템 정보 가져오기
-      var effect = item.itemEffect;
-      console.log(effect)
-      player.getItemEffect(effect);
-      items.splice(i,1);
 
+      player.getItemEffect(item.itemEffect,item.score);
+      items.splice(i,1);
+      //아이템 획득 소리 추가
+      itemSound.play();
     }
+  }
+}
+
+function hitBulletDectectEnemy(){
+  var bullets =  player.bullets;
+  for(var i = 0; i < bullets.length;i++){
+
   }
 }
 
@@ -145,10 +161,11 @@ function printData(){
 
 
 function draw(){
+  showInfo();
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 
-  drawInfo();
+
   drawEnemyBullets();
   makeItem();
   drawItem();
@@ -164,6 +181,4 @@ function draw(){
   }
   requestAnimationFrame(draw);
 }
-var k = new Enemy(15,0);
-k.shoot();
 draw();
