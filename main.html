@@ -3,10 +3,40 @@
 <head>
     <meta charset="utf-8" />
     <title>Gamedev Canvas Workshop - lesson 10: finishing up</title>
-    <style>* { padding: 0; margin: 0; } canvas { background: #000; display: block; margin: 0 auto; }</style>
+    <style>canvas { background: #000; display: block; margin: 0 auto; }</style>
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="styles.css" />
 </head>
 <body>
+  <div class="grid">
+  <div class="left-column">
+    <h2>HIGH SCORES</h2>
+    <ol id="highScores">
+    <ul>엄준식</ul>
+    </ol>
+  </div>
+  <div>
   <canvas id="Canvas" width="300" height="500"></canvas>
+  </div>
+  <div class="right-column">
+    <div>
+      <h1>GALAGA</h1>
+      <p>SCORE: <span id="score">0</span></p>
+      <p>LIFE : <span id="life">0</span></p>
+      <p>MOVE SPEED : <span id="moveSpeed">0</span></p>
+      <p>SHOOT DELAY : <span id="shootDelay">0</span></p>
+      <p>BULLET SPEED : <span id="bulletSpeed">0</span></p>
+      <p>EQUIP ITEMS : <span id="equipItems">0</span></p>
+      <p>SHOOTED : <span id="shooted">0</span></p>
+      <P>CATCHED : <span id="catched">0</span></p>
+      <p>ACCURACY : <span id="accuracy">0%</span></p>
+
+    </div>
+  </div>
+</div>
+<div id="sound">
+</div>
+  <script type="text/javascript" src="sound.js"></script>
   <script type="text/javascript" src="const.js"></script>
   <script type="text/javascript" src="class.js"></script>
   <script type="text/javascript" src="main.js"></script>
