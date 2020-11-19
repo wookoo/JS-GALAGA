@@ -18,17 +18,20 @@ class Player{
     this.moveSpeed = 3;
     this.x = x;
     this.y = y;
-    this.width = 50;
+    this.width = 30;
     this.bulletSpeed = 2;
     this.bulletSize = 10;
     this.score = 0;
     this.shootDelay = 300;
     this.lastShoot = new Date().getTime();
     this.bullets = [];
-    this.height = 20;
+    this.height = 30;
     this.shooted = 0;
     this.equipItems = 0;
     this.catched = 0;
+    this.lastEquipItem = "NONE";
+    this.img = new Image();
+    this.img.src = "image/player.png"
   }
   getDamage(){
     this.life--;
@@ -39,9 +42,9 @@ class Player{
     this.shootDelay = 300;
   }
   moveSpeedUp(){
-    this.moveSpeed += 2;
-    if(this.moveSpeed > 20){
-      this.moveSpeed = 20;
+    this.moveSpeed += 1;
+    if(this.moveSpeed > 10){
+      this.moveSpeed = 10;
     }
   }
   bulletSpeedUp(){
@@ -79,7 +82,7 @@ class Player{
       this.shooted++;
       this.bullets.push(
         new Bullet(
-          this.x+(this.width/2),this.y-20,
+          this.x+(this.width/2),this.y-this.height-20,
           this.bulletSize,
           this.bulletSpeed
         )
@@ -88,9 +91,9 @@ class Player{
   }
 
   bulletShootDelayDown(){
-    this.shootDelay-=100;
-    if (this.shootDelay <=0){
-      this.shootDelay = 0;
+    this.shootDelay-=50;
+    if (this.shootDelay <=50){
+      this.shootDelay = 50;
     }
   }
   lifeUp(){
@@ -101,18 +104,18 @@ class Player{
     this.scoreUp(score);
     if(effect === ITEM_EFFECT.MOVE_SPEED_UP){
       this.moveSpeedUp();
-      console.log("이동 속도 업");
+      this.lastEquipItem = "MOVE SPEED";
     }
     else if(effect === ITEM_EFFECT.BULLET_SHOOT_SPEED_UP){
       this.bulletSpeedUp();
-      console.log("발사속도 업");
+      this.lastEquipItem = "BULLET SPEED";
     }
     else if(effect === ITEM_EFFECT.BULLET_SHOOT_DELAY_DOWN){
       this.bulletShootDelayDown();
-      console.log("발사 딜레이 다운");
+      this.lastEquipItem = "SHOOT DELAY";
     }
     else if(effect === ITEM_EFFECT.LIFE_UP){
-      console.log("생명 업");
+      this.lastEquipItem = "LIFE UP";
       this.lifeUp();
     }
   }
@@ -123,6 +126,7 @@ class Bullet{
       this.y = y;
       this.size = bulletSize;
       this.speed = speed;
+      this.x = this.x - bulletSize/2;
     }
     move(){
       this.y -= this.speed;
@@ -132,29 +136,37 @@ class Bullet{
     }
 }
 class Item{
+  static ctx = null;
+  static MAX_WIDTH = 0;
+  static canvas = null;
   constructor(x){
     this.x = x;
     this.y = 0;
-    this.width = 20;
-    this.height = 20;
+    this.width = ITEM_WIDTH;
+    this.height = ITEM_WIDTH;
     var jbRandom = Math.random();
     this.itemEffect = Math.floor( jbRandom * 4 );// 0~3 까지 랜덤
     this.score = Math.floor(Math.random()*300+100);
-    this.colorIndex = Math.floor(Math.random()*7);
-    console.log(this.colorIndex);
-    this.color = COLOR[this.colorIndex];
+
     this.lastChanged = new Date().getTime();
+    this.speedY = Math.floor(Math.random()*2+1);
+    this.speedX = Math.floor(Math.random()*2+1);
+    this.img = ITEM_IMAGES[this.itemEffect];
   }
   move(){
-    this.y += 1;
-  }
-  rotateColor(){
-    var now = new Date().getTime();
-    if(now - this.lastChanged > 200){
-      this.colorIndex = (this.colorIndex+1)%7;
-      this.color = COLOR[this.colorIndex];
-      this.lastChanged = now;
+    this.y += this.speedY;
+    this.x += this.speedX;
+    if(this.x > Item.MAX_WIDTH){
+      this.speedX = - (this.speedX);
     }
+    if(this.x < 0){
+      this.speedX = - (this.speedX);
+    }
+  }
 
+  static setStatic(ctx,canvas){
+    Item.ctx = ctx;
+    Item.MAX_WIDTH = canvas.width;
+    Item.canvas = canvas;
   }
 }
