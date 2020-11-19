@@ -15,3 +15,14 @@ const ITEM_EFFECT = {
   BULLET_SHOOT_DELAY_DOWN : 2,
   LIFE_UP : 3,
 };
+const COLOR =[
+  "#FF0000",//빨간색
+  "#FF7F00",
+  "#FFFF00",
+  "#00FF00",
+  "#0000FF",
+  "#4B0082",
+  "#9400D3"
+
+]
+const ITEM_WIDTH = 20;
