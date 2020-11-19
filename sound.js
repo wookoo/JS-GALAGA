@@ -59,8 +59,10 @@ Sound.prototype.play = function(){
     }
 }
 
-let sound = new Sound(document.querySelector("#sound")),
-    shootSound = sound.create("sound/shoot.mp3", "shoot_sound");
-    itemSound = sound.create("sound/getItem.mp3", "item_sound");;
+let sound = new Sound(document.querySelector("#sound"));
+let shootSound = sound.create("sound/shoot.mp3", "shoot_sound");
+let itemSound = sound.create("sound/getItem.mp3", "item_sound");
+let damageSound = sound.create("sound/damage.mp3","damage_sound");
+
 sound.muteToggle();
 sound.soundSetting();
