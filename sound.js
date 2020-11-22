@@ -1,68 +1,12 @@
-class Sound {
-    constructor(parent){
-        this.parent = parent;
-        this.sounds = [];
-        this.muted = true;
-    }
-
-    create(src, id, loop = false){
-        let audio = document.createElement("audio");
-        audio.src = src;
-        audio.id = id;
-        audio.muted = true;
-        this.sounds.push(audio);
-        this.parent.append(audio);
-
-        if(loop){
-            audio.setAttribute("loop", "")
-        }
-
-        return audio;
+class Sound { //사운드 클래스
+    constructor(src){
+      var audio = document.createElement("audio"); //audio 요소 생성
+      audio.src = src; //audio 의 src 는 받아온 src
+      return audio; //생성된 오디오 반환
     }
 
 }
 
-Sound.prototype.soundSetting = function(){
-    let soundItems = document.querySelectorAll(".sound-item");
-    for(let soundItem of soundItems){
-        soundItem.addEventListener("click", (e)=>{
-            this.muteToggle();
-        });
-    }
-};
-
-Sound.prototype.muteToggle = function(){
-    if(!this.muted){
-        for(let sound of this.sounds){
-            sound.muted = true;
-        }
-        document.querySelector("#sound-speaker").innerHTML = "\u{1F507}";
-        document.querySelector("#sound-description").innerHTML = "off";
-        this.muted = true;
-    }else{
-      for(let sound of this.sounds){
-          sound.muted = false;
-      }
-      this.muted = false;
-    }
-};
-
-Sound.prototype.pause = function(){
-    for(let sound of this.sounds){
-        sound.pause();
-    }
-}
-
-Sound.prototype.play = function(){
-    for(let sound of this.sounds){
-        sound.play();
-    }
-}
-
-let sound = new Sound(document.querySelector("#sound"));
-let shootSound = sound.create("sound/shoot.mp3", "shoot_sound");
-let itemSound = sound.create("sound/getItem.mp3", "item_sound");
-let damageSound = sound.create("sound/damage.mp3","damage_sound");
-
-sound.muteToggle();
-sound.soundSetting();
+var shootSound = new Sound("sound/shoot.mp3"); //발사 효과음 생성
+var itemSound = new Sound("sound/getItem.mp3"); //아이템 획득 효과음 생성
+var damageSound = new Sound("sound/damage.mp3"); //데미지 받은 효과음 생성

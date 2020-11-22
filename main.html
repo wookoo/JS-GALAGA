@@ -1,49 +1,67 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <title>Gamedev Canvas Workshop - lesson 10: finishing up</title>
-    <style>canvas { background: #000; display: block; margin: 0 auto; }</style>
-    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <meta charset="utf-8" /> <!-- 인코딩 설정, utf8-->
+    <title>JS - GALAGA</title> <!-- 타이틀 설정-->
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet" /> <!-- 구글웹에서 폰트 받아옴-->
+    <link rel="stylesheet" type="text/css" href="styles.css" /> <!--style.css 적용-->
 </head>
 <body>
-  <div class="grid">
-  <div class="left-column">
-    <h2>HIGH SCORES</h2>
-    <ol id="highScores">
-    <li>엄준식 - 5000</li>
-    </ol>
-  </div>
+  <div class="grid"> <!-- 그리드 배치 사용-->
+    <div class="left-column"> <!-- left column 스타일 사용-->
+      <h2>HIGH SCORES</h2> <!-- 최고점수 스코어보드 이름-->
+      <ol> <!-- 스코어 저장 리스트-->
+        <span id = "highScores"> <!-- 스코어가 추가될 부분 , <li> 이름 - 점수 </li> 추가-->
+        </span>
+      </ol>
+
+      <h1>ITEMS</h1> <!--아이템 설명창-->
+      <ol>
+        <li>
+          <img src = "image/heart.png" width="30" height="30"> LIFE UP
+          <!--heart.png 를 띄우고 LIFE UP 설명으로 보여줌-->
+        </li>
+        <li>
+          <img src = "image/move.png" width="30" height="30"> MOVE SPEED
+          <!--move.png 를 띄우고 MOVE SPEED 설명으로 보여줌-->
+        </li>
+        <li>
+          <img src = "image/shoot-delay.png" width="30" height="30"> SHOOT DELAY
+          <!--shoot-delay.png 를 띄우고 SHOOT DELAY 설명으로 보여줌-->
+        </li>
+        <li>
+          <img src = "image/bullet-speed.png" width="30" height="30"> BULLET SPEED
+          <!--bullet-speed.png 를 띄우고  BULLET SPEED 설명으로 보여줌-->
+        </li>
+      </ol>
+    </div><!-- left column 끝-->
   <div>
-  <canvas id="Canvas" width="300" height="500"></canvas>
+  <canvas id="Canvas" width="300" height="500"></canvas> <!-- 게임 보드 추가-->
   </div>
-  <div class="right-column">
+  <div class="right-column"><!-- right-column 스타일 사용-->
     <div>
-      <h1>GALAGA</h1>
-      <p>SCORE: <span id="score">0</span></p>
-      <p>LIFE : <span id="life">0</span></p>
-      <p>MOVE SPEED : <span id="moveSpeed">0</span></p>
-      <p>SHOOT DELAY : <span id="shootDelay">0</span></p>
-      <p>BULLET SPEED : <span id="bulletSpeed">0</span></p>
-      <p>EQUIP ITEMS : <span id="equipItems">0</span></p>
-      <p>SHOOTED : <span id="shooted">0</span></p>
-      <P>CATCHED : <span id="catched">0</span></p>
-      <p>ACCURACY : <span id="accuracy">0%</span></p>
+      <h1>GALAGA</h1> <!-- GALAGA 타이틀 설정-->
+      <p>SCORE: <span id="score">0</span></p> <!-- 스코어 보여지는 란-->
+      <p>LIFE : <span id="life">0</span></p> <!-- 목숨 보여지는 란-->
+      <p>MOVE SPEED : <span id="moveSpeed">0</span></p> <!-- 이동속도 보여지는 란-->
+      <p>SHOOT DELAY : <span id="shootDelay">0</span></p> <!-- 발사 지연 보여지는 란-->
+      <p>BULLET SPEED : <span id="bulletSpeed">0</span></p> <!-- 총알 속도 보여지는 란-->
+      <p>EQUIP ITEMS : <span id="equipItems">0</span></p> <!-- 획득한 아이템 총합 보여지는 란-->
+      <p>SHOOTED : <span id="shooted">0</span></p> <!-- 발사한 총알 총 합 보여지는 란-->
+      <P>CATCHED : <span id="catched">0</span></p> <!-- 잡은 적의 총합 보여지는란-->
+      <p>ACCURACY : <span id="accuracy">0%</span></p> <!-- 정확도를 보여지는 란-->
       <br>
       <br>
       <p>- LAST EQUIP ITEM -</p>
-      <p><span id="lastEquipItem">NONE</span></p>
-
+      <p><span id="lastEquipItem">NONE</span></p> <!-- 마지막 획득 아이템을 보여지는 란-->
     </div>
   </div>
 </div>
-<div id="sound">
-</div>
-  <script type="text/javascript" src="sound.js"></script>
-  <script type="text/javascript" src="const.js"></script>
-  <script type="text/javascript" src="class.js"></script>
-  <script type="text/javascript" src="main.js"></script>
+
+  <script type="text/javascript" src="sound.js"></script> <!-- sound.js 스크립트 파일 추가-->
+  <script type="text/javascript" src="const.js"></script>  <!-- const.js 스크립트 파일 추가-->
+  <script type="text/javascript" src="class.js"></script>  <!-- class.js 스크립트 파일 추가-->
+  <script type="text/javascript" src="main.js"></script>  <!-- main.js 스크립트 파일 추가-->
 
 </body>
 </html>

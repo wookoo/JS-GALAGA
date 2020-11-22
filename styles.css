@@ -1,48 +1,32 @@
-* {
+* { /*모든 요소에 대해 기본 폰트 설정, Press start 2p 폰트, 해당 폰트는 외부에서 받아옴*/
   font-family: 'Press Start 2P', cursive;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: 350px 320px 350px;
+.grid { /*id 가 grid 인 요소 속성 설정 */
+  display: grid; /*그리드 배치로 설정*/
+  grid-template-columns: 350px 320px 350px; /*템플릿은 3개, 350픽셀, 320 픽셀 350 픽셀 할당*/
   position: absolute;
-  left: 50%;
+  left: 50%;/*왼쪽 경계 50%*/
   transform: translate(-50%, 0);
-  padding-top: 30px;
+  padding-top: 30px; /*위쪽 패딩 30px 로 설정*/
 }
 
-.left-column {
-  display: flex;
-  flex-direction: column;
+.left-column { /*왼쪽 열 설정*/
+  display: flex; /*flex 로 설정해서 , 꽉 채우게*/
+  flex-direction: column; /*column 으로 교차축 설정*/
   padding-right: 0px;
 }
 
 .right-column {
-  display: flex;
-  flex-direction: column;
+  display: flex; /*flex 로 설정해서 꽉 채우게*/
+  flex-direction: column; /*column 으로 교차축 설정*/
   justify-content: space-between;
-  font-size: 12pt;
+  font-size: 12pt; /*폰트 크기는 12 포인트*/
 }
 
-.game-board {
-  border: solid 2px;
-}
 
-.play-button {
-  background-color: #4caf50;
-  font-size: 16px;
-  padding: 15px 30px;
-  cursor: pointer;
-}
-
-#pause-btn {
-  display: none;
-}
-
-#sound-speaker{
-  font-size:30px;
-}
-
-.sound-item{
-  cursor:pointer;
+canvas { /*캔버스 요소 설정*/
+  background: #000; /*배경은 검은색*/
+  display: block; /*블록요소 배치*/
+  margin: 0 auto;
 }
